@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coffee Hause</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+/* VARIABLES PARA TEMAS (Claro y Oscuro Pastel) */
+:root {
+    --bg-gradient: linear-gradient(to bottom, #ffe4ec, #ffd6e7);
+    --bg-nav: rgba(255, 192, 203, 0.9);
+    --text-primary: #ff4d88;
+    --text-hover: #ff1a66;
+    --box-bg: #fff0f5;
+    --box-border: rgba(255, 255, 255, 0.6);
+    --product-title: #444;
+    --product-desc: #888;
+    --input-bg: #ffffff;
+    --input-border: #ffccd8;
+    --badge-featured: #fff3cd;
+    --badge-featured-text: #856404;
+}
+
+body.dark-mode {
+    --bg-gradient: linear-gradient(to bottom, #2c161d, #1a0b10);
+    --bg-nav: rgba(44, 22, 29, 0.95);
+    --text-primary: #ff85a2;
+    --text-hover: #ffb3c6;
+    --box-bg: #3d202a;
+    --box-border: rgba(255, 133, 162, 0.15);
+    --product-title: #fff0f5;
+    --product-desc: #b3a2a7;
+    --input-bg: #4d2b37;
+    --input-border: #663d4a;
+    --badge-featured: #543916;
+    --badge-featured-text: #ffe0b3;
+}
+
+/* PERSONALIZACIÓN DE SCROLLBAR */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #ffe4ec;
+}
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #2c161d;
+}
+::-webkit-scrollbar-thumb {
+    background: #ff85a2;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #ff4d88;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-gradient);
+    color: var(--product-title);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* NAV STICKY Y ESMERILADO */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background: var(--bg-nav);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.15);
+    transition: background 0.3s;
+}
+
+nav h2 {
+    font-family: 'Pacifico', cursive;
+    color: var(--text-primary);
+    margin: 0;
+    font-size: 28px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: bold;
+    transition: 0.3s;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: var(--text-hover);
+}
+
+/* BOTÓN TEMA */
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.3s;
+}
+.theme-toggle-btn:hover {
+    transform: scale(1.15);
+}
+
+/* HORARIOS BADGE */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* HERO CON LOGO FLOTANTE */
+.hero {
+    display: flex;
+    justify-content: center;
+    height: 300px;
+    align-items: center;
+    perspective: 1000px;
+}
+
+.hero img {
+    max-width: 220px;
+    filter: drop-shadow(0 10px 15px rgba(255,105,180,0.3));
+    animation: floatEffect 4s ease-in-out infinite;
+}
+
+@keyframes floatEffect {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(2deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* BUSCADOR DE ANTOJOS */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+    padding: 0 20px;
+}
+
+.search-container input {
+    width: 100%;
+    max-width: 450px;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: 2px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--product-title);
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(255,105,180,0.05);
+    text-align: center;
+}
+
+.search-container input:focus {
+    border-color: #ff4d88;
+    box-shadow: 0 4px 20px rgba(255,105,180,0.2);
+}
+
+/* FILTRO DE CATEGORÍAS */
+.categories-filter {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 35px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
+
+.filter-btn {
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 2px solid var(--input-border);
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 10px rgba(255,105,180,0.1);
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: #ff4d88;
+    color: #ffffff;
+    border-color: #ff4d88;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(255,77,136,0.3);
+}
+
+/* MENU */
+.menu {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu h2 {
+    text-align: center;
+    color: var(--text-primary);
+    font-family: 'Pacifico', cursive;
+    font-size: 42px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+}
+body.dark-mode .menu h2 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.menu-box {
+    background: var(--box-bg);
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(255,105,180,0.15);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid var(--box-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(255,105,180,0.3);
+    border-color: #ffc0cb;
+}
+
+.menu-box img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.menu-box:hover img {
+    transform: scale(1.05);
+}
+
+.menu-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-content h4 {
+    margin-top: 0;
+    color: var(--text-primary);
+    font-size: 22px;
+    border-bottom: 2px dashed var(--input-border);
+    padding-bottom: 8px;
+    text-align: center;
+}
+
+/* PRODUCTOS INTERNOS */
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(255, 133, 162, 0.2);
+    position: relative;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    max-width: 60%;
+}
+
+.product-title {
+    font-weight: bold;
+    color: var(--product-title);
+    font-size: 15px;
+}
+
+.product-desc {
+    font-size: 11px;
+    color: var(--product-desc);
+    margin-top: 2px;
+}
+
+/* BADGE DESTACADO */
+.badge-destacado {
+    background-color: var(--badge-featured);
+    color: var(--badge-featured-text);
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: bold;
+    width: fit-content;
+    margin-bottom: 2px;
+}
+
+.product-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* BOTONES DE AGREGAR / TAMAÑO */
+.product-actions button, .btn-size {
+    background: #ff85a2;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: 0.2s;
+    box-shadow: 0 3px 6px rgba(255, 133, 162, 0.2);
+}
+
+.product-actions button:hover, .btn-size:hover {
+    background: #ff4d88;
+    transform: scale(1.1);
+}
+
+/* NOTAS DE INGREDIENTES */
+.ingredients-note {
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 10px;
+    border-radius: 15px;
+    margin-top: 15px;
+    color: var(--product-desc);
+    line-height: 1.4;
+    border: 1px dashed var(--input-border);
+}
+body.dark-mode .ingredients-note {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* MODAL DE PERSONALIZACIÓN AVANZADO */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: var(--box-bg);
+    color: var(--product-title);
+    padding: 25px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 440px;
+    border: 3px solid var(--input-border);
+    box-shadow: 0 15px 35px rgba(255,105,180,0.3);
+    position: relative;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalScale {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-weight: bold;
+}
+
+.modal h3 {
+    margin-top: 0;
+    color: var(--text-primary);
+    font-family: 'Pacifico', cursive;
+    font-size: 24px;
+    text-align: center;
+}
+
+.modal-options-group {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.modal-options-group h5 {
+    margin: 5px 0 10px 0;
+    color: var(--text-primary);
+    font-size: 14px;
+    border-bottom: 1px dashed var(--input-border);
+    padding-bottom: 3px;
+}
+
+.modal-grid-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--product-title);
+    cursor: pointer;
+}
+
+.option-item input {
+    accent-color: #ff4d88;
+    width: 16px;
+    height: 16px;
+}
+
+#btnConfirmarCustom {
+    width: 100%;
+    background: #ff4d88;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+#btnConfirmarCustom:hover {
+    background: #ff1a66;
+    transform: scale(1.02);
+}
+
+/* MAPA */
+.mapa {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    margin: 20px;
+}
+
+.mapa h3 {
+    font-family: 'Pacifico', cursive;
+    color: var(--text-primary);
+    font-size: 32px;
+    margin-top: 0;
+}
+
+.mapa button {
+    background: #ff4d88;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(255, 77, 136, 0.3);
+}
+
+.mapa button:hover {
+    background: #ff1a66;
+    transform: scale(1.05);
+}
+
+/* INFO */
+.info {
+    background: rgba(255, 192, 203, 0.3);
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.info h3 {
+    font-family: 'Pacifico', cursive;
+    color: var(--text-primary);
+    font-size: 32px;
+    margin-top: 0;
+}
+
+.info p {
+    font-size: 18px;
+    color: var(--product-title);
+}
+
+/* REDES */
+.redes {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.redes h3 {
+    font-family: 'Pacifico', cursive;
+    color: var(--text-primary);
+    font-size: 32px;
+    margin-top: 0;
+}
+
+.redes img {
+    width: 60px;
+    margin: 15px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 5px 10px rgba(255,105,180,0.2));
+}
+
+.redes img:hover {
+    transform: scale(1.25) rotate(8deg);
+}
+
+/* FLOATING ACTIONS CONTAINER */
+.floating-actions {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1000;
+}
+
+.btn-float {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    user-select: none;
+    border: none;
+    color: white;
+    text-decoration: none;
+}
+.btn-float:hover {
+    transform: scale(1.1);
+}
+
+.whatsapp-float {
+    background: #25D366;
+    font-size: 28px;
+}
+.whatsapp-float:hover {
+    background: #20ba5a;
+}
+
+.carrito-btn {
+    background: #ff4d88;
+    font-size: 22px;
+    position: relative;
+}
+.carrito-btn:hover {
+    background: #ff1a66;
+}
+
+#contador {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #fff;
+    color: #ff4d88;
+    border: 2px solid #ff4d88;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body.dark-mode #contador {
+    background: #3d202a;
+    color: #ff85a2;
+    border-color: #ff85a2;
+}
+
+#scrollToTop {
+    background: #ff85a2;
+    font-size: 20px;
+    display: none;
+}
+#scrollToTop.visible {
+    display: flex;
+}
+#scrollToTop:hover {
+    background: #ff4d88;
+}
+
+.bounce-effect {
+    animation: bounce 0.4s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+/* PANEL DEL CARRITO */
+.carrito-panel {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 320px;
+    background: var(--box-bg);
+    border-radius: 25px;
+    padding: 20px;
+    display: none;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    z-index: 999;
+    border: 2px solid var(--input-border);
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.carrito-panel h3 {
+    margin-top: 0;
+    color: var(--text-primary);
+    font-size: 18px;
+    text-align: center;
+    border-bottom: 2px dashed var(--input-border);
+    padding-bottom: 8px;
+}
+
+#listaCarrito {
+    padding: 0;
+    list-style: none;
+    margin-bottom: 15px;
+}
+
+#listaCarrito li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.5);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    font-size: 13px;
+    line-height: 1.3;
+}
+body.dark-mode #listaCarrito li {
+    background: rgba(0,0,0,0.2);
+}
+
+.cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.btn-qty {
+    background: #ff85a2;
+    color: white;
+    border: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-qty:hover {
+    background: #ff4d88;
+}
+
+.eliminar {
+    color: #ff4d88;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    font-size: 14px;
+}
+.eliminar:hover {
+    transform: scale(1.2);
+}
+
+#totalCarrito {
+    font-weight: bold;
+    text-align: right;
+    font-size: 16px;
+    color: var(--text-primary);
+    padding-top: 10px;
+    border-top: 2px dashed var(--input-border);
+    margin-bottom: 12px;
+}
+
+.carrito-panel button {
+    width: 100%;
+    background: #ff4d88;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.carrito-panel button:hover {
+    background: #ff1a66;
+}
+
+/* NOTIFICACIÓN */
+#noti {
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    background: #ff4d88;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 20px;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1001;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(255,77,136,0.3);
+    pointer-events: none;
+}
+
+/* EFECTO DE PARTÍCULA DE CORAZÓN */
+.heart-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 24px;
+    animation: heartFly 1s ease-out forwards;
+}
+
+@keyframes heartFly {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-120px) translateX(var(--drift)) scale(0.5) rotate(15deg); opacity: 0; }
+}
+
+/* ==========================================
+   NUEVOS AJUSTES DE DISEÑO PARA CELULARES (RESPONSIVO) 🌸
+   ========================================== */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        padding: 15px 20px;
+        gap: 12px;
+    }
+    
+    .nav-right {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+
+    nav ul {
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    nav a {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    .hero {
+        height: 220px;
+    }
+
+    .hero img {
+        max-width: 160px;
+    }
+
+    /* Carrusel deslizable horizontal para las categorías en celular */
+    .categories-filter {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 5px 15px 15px 15px;
+        gap: 10px;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Ocultar barra de scroll tosca manteniendo el deslizamiento nativo */
+    .categories-filter::-webkit-scrollbar {
+        height: 5px;
+    }
+    .categories-filter::-webkit-scrollbar-thumb {
+        background: var(--input-border);
+        border-radius: 10px;
+    }
+
+    .filter-btn {
+        flex: 0 0 auto;
+        font-size: 13px;
+        padding: 6px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu {
+        padding: 10px;
+    }
+
+    .menu h2 {
+        font-size: 32px;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .menu-box {
+        border-radius: 20px;
+    }
+
+    /* El panel de compras flotante se adapta de forma perfecta a pantallas delgadas */
+    .carrito-panel {
+        width: calc(100% - 40px);
+        left: 20px;
+        right: 20px;
+        box-sizing: border-box;
+    }
+
+    .modal-content {
+        padding: 20px;
+        width: 92%;
+    }
+    
+    .modal-grid-options {
+        grid-template-columns: 1fr; /* Pasa las opciones a una columna para que no se encimen */
+        gap: 6px;
+    }
+}
+
+@media (max-width: 380px) {
+    /* Si la pantalla es extremadamente compacta, evita que los textos largos choquen con los botones */
+    .product-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 0;
+    }
+
+    .product-info {
+        max-width: 100%;
+    }
+
+    .product-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h2>Coffee Hause</h2>
+    <div class="nav-right">
+        <span id="estado-horario" class="status-badge"></span>
+        <ul>
+            <li><a href="#menu">Menú</a></li>
+            <li><a href="#info">Información</a></li>
+            <li><a href="#mapa">Ubicación</a></li>
+        </ul>
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar tema">🌓</button>
+    </div>
+</nav>
+
+<div class="hero">
+    <img src="img/logo_circular_sin_fondo.png" alt="Coffee Hause Logo" onerror="this.style.display='none'">
+</div>
+
+<div class="menu" id="menu">
+    <h2>Menú</h2>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="🔍 ¿De qué tienes antojo hoy? (Busca aquí...)" onkeyup="buscarProductos()">
+    </div>
+
+    <div class="categories-filter">
+        <button class="filter-btn active" onclick="filtrarMenu('todos', this)">💖 Todos</button>
+        <button class="filter-btn" onclick="filtrarMenu('smoothies', this)">🍓 Smoothies</button>
+        <button class="filter-btn" onclick="filtrarMenu('sodas', this)">🥤 Sodas</button>
+        <button class="filter-btn" onclick="filtrarMenu('frappes', this)">🍫 Frappés</button>
+        <button class="filter-btn" onclick="filtrarMenu('malteadas', this)">🥛 Malteadas</button>
+        <button class="filter-btn" onclick="filtrarMenu('crepas-dulces', this)">🍰 Crepas Dulces</button>
+        <button class="filter-btn" onclick="filtrarMenu('crepas-saladas', this)">🥓 Crepas Saladas</button>
+        <button class="filter-btn" onclick="filtrarMenu('hotcakes-waffles', this)">🥞 Hot Cakes & Waffles</button>
+        <button class="filter-btn" onclick="filtrarMenu('fresas-crema', this)">🍧 Fresas con Crema</button>
+    </div>
+
+    <div class="menu-grid">
+
+        <div class="menu-box" data-category="smoothies">
+            <img src="img/Berry-Yogurt-Smoothie-FF-featured-image-720x720.jpg" onerror="this.src='https://share.google/r7LmaPrkXyjAOwnjo'" alt="Smoothies">
+            <div class="menu-content">
+                <h4>Smoothies</h4>
+                <script>
+                    const smoothSabs = ["Mango", "Mora azul", "Cereza", "Fresa", "Frutos rojos", "Kiwi", "Tamarindo", "Arándano"];
+                    smoothSabs.forEach(sab => {
+                        const esDestacado = (sab === "Fresa" || sab === "Frutos rojos") ? '<span class="badge-destacado">⭐ Populares</span>' : '';
+                        document.write(`
+                        <div class="product-item">
+                            <div class="product-info">
+                                ${esDestacado}
+                                <span class="product-title">Smoothie ${sab}</span>
+                                <span class="product-desc">Perlas explosivas, sabor ${sab.toLowerCase()} y agua</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn-size" onclick="agregarProducto('Smoothie ${sab} Ch.', 55, event)">Ch. $55</button>
+                                <button class="btn-size" onclick="agregarProducto('Smoothie ${sab} Gde.', 65, event)">Gd. $65</button>
+                            </div>
+                        </div>`);
+                    });
+                </script>
+            </div>
+        </div>
+
+        <div class="menu-box" data-category="sodas">
+            <img src="img/sodas.jpg" onerror="this.src='https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=600'" alt="Sodas Italianas">
+            <div class="menu-content">
+                <h4>Sodas Italianas</h4>
+                <script>
+                    const sodaSabs = ["Mango", "Mora azul", "Cereza", "Frutos rojos", "Arándano"];
+                    sodaSabs.forEach(sab => {
+                        const esDestacado = (sab === "Mora azul") ? '<span class="badge-destacado">⭐ Destacado</span>' : '';
+                        document.write(`
+                        <div class="product-item">
+                            <div class="product-info">
+                                ${esDestacado}
+                                <span class="product-title">Soda ${sab}</span>
+                                <span class="product-desc">Perlas explosivas, sabor ${sab.toLowerCase()} y agua de gas</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn-size" onclick="agregarProducto('Soda ${sab} Ch.', 55, event)">Ch. $55</button>
+                                <button class="btn-size" onclick="agregarProducto('Soda ${sab} Gde.', 65, event)">Gd. $65</button>
+                            </div>
+                        </div>`);
+                    });
+                </script>
+            </div>
+        </div>
+
+        <div class="menu-box" data-category="frappes">
+            <img src="img/frappe.webp" onerror="this.src='https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&q=80&w=600'" alt="Frappés">
+            <div class="menu-content">
+                <h4>Frappés</h4>
+                <script>
+                    const frappesList = [
+                        {n: "Chai", d: "Sabor chai y leche"},
+                        {n: "Taro", d: "Sabor taro y leche"},
+                        {n: "Caramelo", d: "Sabor caramelo y leche"},
+                        {n: "Chocolate", d: "Sabor chocolate y leche"},
+                        {n: "Capuchino", d: "Sabor capuchino y leche"},
+                        {n: "Moka", d: "Sabor moka y leche"},
+                        {n: "Matcha", d: "Sabor matcha y leche"},
+                        {n: "Oreo", d: "Sabor oreo y leche", dest: true},
+                        {n: "Mazapán", d: "Sabor mazapán y leche"},
+                        {n: "Gansito", d: "Sabor gansito y leche", dest: true},
+                        {n: "Fresas con crema", d: "Sabor fresas c/ crema y leche"},
+                        {n: "Kinder delice", d: "Sabor kinder y leche"},
+                        {n: "Mora con Philadelphia", d: "Sabor mora y leche"},
+                        {n: "Ferrero", d: "Sabor ferrero y leche"},
+                        {n: "Red velvet", d: "Sabor red velvet y leche"},
+                        {n: "Pistache", d: "Sabor pistache y leche"},
+                        {n: "Choco menta", d: "Sabor choco menta y leche"}
+                    ];
+                    frappesList.forEach(f => {
+                        const esDestacado = f.dest ? '<span class="badge-destacado">⭐ Favorito</span>' : '';
+                        document.write(`
+                        <div class="product-item">
+                            <div class="product-info">
+                                ${esDestacado}
+                                <span class="product-title">Frappé ${f.n}</span>
+                                <span class="product-desc">${f.d}</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn-size" onclick="agregarProducto('Frappé ${f.n} Ch.', 55, event)">Ch. $55</button>
+                                <button class="btn-size" onclick="agregarProducto('Frappé ${f.n} Gde.', 65, event)">Gd. $65</button>
+                            </div>
+                        </div>`);
+                    });
+                </script>
+            </div>
+        </div>
+
+        <div class="menu-box" data-category="malteadas">
+            <img src="img/malteadas.jpg" onerror="this.src='https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&q=80&w=600'" alt="Malteadas">
+            <div class="menu-content">
+                <h4>Malteadas</h4>
+                <script>
+                    const malteadasList = [
+                        {n: "Vainilla", d: "Endulzante de vainilla, azúcar, leche"},
+                        {n: "Fresa", d: "Fresas, azúcar, leche y hielo"},
+                        {n: "Oreo", d: "Oreos, azúcar, leche y hielo", dest: true},
+                        {n: "Chocolate", d: "Chocolate, leche, azúcar y hielo"},
+                        {n: "Caramelo", d: "Caramelo, azúcar, hielo y leche"},
+                        {n: "Plátano", d: "Plátano, azúcar, hielo, leche"}
+                    ];
+                    malteadasList.forEach(m => {
+                        const esDestacado = m.dest ? '<span class="badge-destacado">⭐ Especial</span>' : '';
+                        document.write(`
+                        <div class="product-item">
+                            <div class="product-info">
+                                ${esDestacado}
+                                <span class="product-title">Malteada ${m.n}</span>
+                                <span class="product-desc">${m.d}</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn-size" onclick="agregarProducto('Malteada ${m.n} Ch.', 45, event)">Ch. $45</button>
+                                <button class="btn-size" onclick="agregarProducto('Malteada ${m.n} Gde.', 55, event)">Gd. $55</button>
+                            </div>
+                        </div>`);
+                    });
+                </script>
+            </div>
+        </div>
+
+        <div class="menu-box" data-category="crepas-dulces">
+            <img src="img/crepa.jfif" onerror="this.src='https://images.unsplash.com/photo-1519676867240-f03562e64548?auto=format&fit=crop&q=80&w=600'" alt="Crepas Dulces">
+            <div class="menu-content">
+                <h4>Crepas Dulces</h4>
+                <div class="product-item">
+                    <div class="product-info"><span class="badge-destacado">⭐ Top 1</span><span class="product-title">Crepa de Fresa</span><span class="product-desc">Fresa fresca, lechera, crema batida y azúcar glass</span></div>
+                    <div class="product-actions"><button onclick="agregarProducto('Crepa de Fresa', 65, event)">+$65</button></div>
+                </div>
+                <div class="product-item">
+                    <div class="product-info"><span class="product-title">Crepa de Plátano</span><span class="product-desc">Plátano, chocolate, nuez y crema batida</span></div>
+                    <div class="product-actions"><button onclick="agregarProducto('Crepa de Plátano', 65, event)">+$65</button></div>
+                </div>
+                <div class="product-item">
+                    <div class="product-info"><span class="product-title">Crepa de Kiwi</span><span class="product-desc">Kiwi, queso crema, lechera y azúcar glass</span></div>
+                    <div class="product-actions"><button onclick="agregarProducto('Crepa de Kiwi', 65, event)">+$65</button></div>
+                </div>
+                <div class="product-item">
+                    <div class="product-info"><span class="product-title">Crepa de Kiwi y Fresa</span><span class="product-desc">Kiwi, queso crema, nutella, azúcar glass y lechera arriba</span></div>
+                    <div class="product-actions"><button onclick="agregarProducto('Crepa Kiwi y Fresa', 75, event)">+$75</button></div>
+                </div>
+                <div class="product-item">
+                    <div class="product-info"><span class="product-title">Crepa de Fresa y Plátano</span><span class="product-desc">Fresa, nutella, azúcar glass y Hershey's arriba</span></div>
+                    <div class="product-actions"><button onclick="agregarProducto('Crepa Fresa y Plátano', 75, event)">+$75</button></div>
+                </div>
+                <div class="product-item">
+                    <div class="product-info"><span class="product-title">Crepa de Fresa y Durazno</span><span class="product-desc">Durazno, nutella, fresa y dulce de leche arriba</span></div>
+                    <div class="product-actions"><button onclick="agregarProducto('Crepa Fresa y Durazno', 75, event)">+$75</button></div>
+                </div>
+
+                <div style="margin-top: 15px; border-top: 2px dashed var(--input-border); padding-top: 15px;">
+                    <div class="product-item">
+                        <div class="product-info"><span class="product-title">Crepa Armada (1 Ingrediente)</span><span class="product-desc">Elige tu fruta o endulzante favorito</span></div>
+                        <div class="product-actions"><button onclick="abrirModalCustomizar('crepa-dulce', 'Crepa Dulce Armada (1 Ing.)', 65)">🧁 Arma $65</button></div>
+                    </div>
+                    <div class="product-item">
+                        <div class="product-info"><span class="product-title">Crepa Armada (2 Ingredientes)</span><span class="product-desc">Combina dos ingredientes deliciosos</span></div>
+                        <div class="product-actions"><button onclick="abrirModalCustomizar('crepa-dulce', 'Crepa Dulce Armada (2 Ing.)', 75)">🧁 Arma $75</button></div>
+                    </div>
+                </div>
+                
+                <div class="ingredients-note">
+                    <strong>Frutas:</strong> Plátano, Fresa, Kiwi, Durazno <br>
+                    <strong>Endulzantes:</strong> Nutella, mermelada de fresa, mermelada de zarzamora, Lechera, Philadelphia, Hershey's
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-box" data-category="crepas-saladas">
+            <img src="img/dbceaa1d3a988a3a8817df360005d08f.jpg" onerror="this.src='https://share.google/Itt8DTruXAnfvgjFX'" alt="Crepas Saladas">
+            <div class="menu-content">
+                <h4>Crepas Saladas</h4>
+                <div class="product-item">
+                    <div class="product-info"><span class="badge-destacado">⭐ Recomendado</span><span class="product-title">Crepa de Peperoni Tipo Pizza</span><span class="product-desc">Peperoni, queso manchego fundido y puré de tomate</span></div>
+                    <div class="product-actions"><button onclick="agregarProducto('Crepa Peperoni Pizza', 65, event)">+$65</button></div>
+                </div>
+                <div class="product-item">
+                    <div class="product-info"><span class="product-title">Crepa Hawaiana</span><span class="product-desc">Queso manchego fundido, piña y jamón</span></div>
+                    <div class="product-actions"><button onclick="agregarProducto('Crepa Hawaiana', 65, event)">+$65</button></div>
+                </div>
+
+                <div style="margin-top: 15px; border-top: 2px dashed var(--input-border); padding-top: 15px;">
+                    <div class="product-item">
+                        <div class="product-info"><span class="product-title">Crepa Salada (1 Ingrediente)</span><span class="product-desc">Arma a tu gusto con una salsa incluida</span></div>
+                        <div class="product-actions"><button onclick="abrirModalCustomizar('crepa-salada', 'Crepa Salada Armada (1 Ing.)', 65)">🥓 Arma $65</button></div>
+                    </div>
+                    <div class="product-item">
+                        <div class="product-info"><span class="product-title">Crepa Salada (2 Ingredientes)</span><span class="product-desc">Combina dos ingredientes salados y salsa</span></div>
+                        <div class="product-actions"><button onclick="abrirModalCustomizar('crepa-salada', 'Crepa Salada Armada (2 Ing.)', 75)">🥓 Arma $75</button></div>
+                    </div>
+                </div>
+
+                <div class="ingredients-note">
+                    <strong>Ingredientes:</strong> Piña, Jamón, Queso manchego, Peperoni <br>
+                    <strong>Salsas:</strong> Valentina, Cátsup, Queso parmesano
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-box" data-category="hotcakes-waffles">
+            <img src="img/hotcakes.webp" onerror="this.src='https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&q=80&w=600'" alt="Hot Cakes y Waffles">
+            <div class="menu-content">
+                <h4>Hot Cakes & Waffles</h4>
+                
+                <div style="border-bottom: 2px dashed var(--input-border); padding-bottom: 12px; margin-bottom: 12px;">
+                    <div style="font-weight: bold; color: #ff4d88; font-size: 14px; text-align: center; margin-bottom: 10px;">🥞 Hot Cakes</div>
+                    <div class="product-item">
+                        <div class="product-info">
+                            <span class="product-title">Hot Cakes (2 Piezas)</span>
+                            <span class="product-desc">Hasta 2 ingredientes y 2 frutas</span>
+                        </div>
+                        <div class="product-actions">
+                            <button onclick="abrirModalCustomizar('hotcakes', 'Hot Cakes (2 Pzs)', 40)">🥞 Arma $40</button>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <div class="product-info">
+                            <span class="product-title">Hot Cakes (3 Piezas)</span>
+                            <span class="product-desc">Hasta 3 ingredientes y 3 frutas</span>
+                        </div>
+                        <div class="product-actions">
+                            <button onclick="abrirModalCustomizar('hotcakes', 'Hot Cakes (3 Pzs)', 60)">🥞 Arma $60</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-bottom: 2px dashed var(--input-border); padding-bottom: 12px; margin-bottom: 12px;">
+                    <div style="font-weight: bold; color: #ff4d88; font-size: 14px; text-align: center; margin-bottom: 10px;">🧇 Waffles Grandes</div>
+                    <div class="product-item">
+                        <div class="product-info">
+                            <span class="badge-destacado">⭐ Muy pedido</span>
+                            <span class="product-title">Waffle Grande Personalizado</span>
+                            <span class="product-desc">Arma libremente con frutas, endulzantes y toppings</span>
+                        </div>
+                        <div class="product-actions">
+                            <button onclick="abrirModalCustomizar('waffle-grande', 'Waffle Grande Personalizado', 70)">🧇 Arma $70</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="font-weight: bold; color: #ff4d88; font-size: 14px; text-align: center; margin-bottom: 10px;">🧇 Mini Waffles</div>
+                    <div class="product-item">
+                        <div class="product-info">
+                            <span class="product-title">Mini Waffles (2 Ing. - 16 Pzs)</span>
+                            <span class="product-desc">Escoge tus frutas, endulzantes y toppings</span>
+                        </div>
+                        <div class="product-actions">
+                            <button onclick="abrirModalCustomizar('mini-waffle', 'Mini Waffles (2 Ing.)', 55)">🧇 Arma $55</button>
+                        </div>
+                    </div>
+                    <div class="product-item">
+                        <div class="product-info">
+                            <span class="product-title">Mini Waffles (3 Ing. - 23 Pzs)</span>
+                            <span class="product-desc">Elige la combinación perfecta</span>
+                        </div>
+                        <div class="product-actions">
+                            <button onclick="abrirModalCustomizar('mini-waffle', 'Mini Waffles (3 Ing.)', 65)">🧇 Arma $65</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ingredients-note" style="margin-top: 15px;">
+                    <strong>Frutas:</strong> Fresa, Durazno, Plátano, Kiwi <br>
+                    <strong>Endulzantes:</strong> Hershey's, Nutella, Lechera, Dulce de leche, Mermelada de fresa, Caramelo, Philadelphia, Mermelada de zarzamora <br>
+                    <strong>Toppings:</strong> Chispas de chocolate, Kisses (Chocolate/Blanco/Combinado), Oreo, Granola, Almendra, Coco
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-box" data-category="fresas-crema">
+            <img src="img/fresasconcrema09-7-jpeg.webp" onerror="this.src='https://share.google/LselcI99LKZHUttE7'"alt="Fresas con Crema">
+            <div class="menu-content">
+                <h4>Fresas con Cream</h4>
+                <div class="product-item">
+                    <div class="product-info">
+                        <span class="product-title">Fresas con Crema (Chico)</span>
+                        <span class="product-desc">Vaso de 10 onzas con tus endulzantes y toppings favoritos</span>
+                    </div>
+                    <div class="product-actions">
+                        <button onclick="abrirModalCustomizar('fresas', 'Fresas con Crema Chico', 70)">🍧 Arma $70</button>
+                    </div>
+                </div>
+                <div class="product-item">
+                    <div class="product-info">
+                        <span class="badge-destacado">⭐ Imperdible</span>
+                        <span class="product-title">Fresas con Crema (Mediano)</span>
+                        <span class="product-desc">Vaso de 12 onzas completamente personalizado</span>
+                    </div>
+                    <div class="product-actions">
+                        <button onclick="abrirModalCustomizar('fresas', 'Fresas con Cream Mediano', 80)">🍧 Arma $80</button>
+                    </div>
+                </div>
+                <div class="product-item">
+                    <div class="product-info">
+                        <span class="product-title">Fresas con Crema (Grande)</span>
+                        <span class="product-desc">Vaso de 16 onzas súper recargado</span>
+                    </div>
+                    <div class="product-actions">
+                        <button onclick="abrirModalCustomizar('fresas', 'Fresas con Crema Grande', 90)">🍧 Arma $90</button>
+                    </div>
+                </div>
+
+                <div class="ingredients-note">
+                    <strong>Endulzantes para el vaso:</strong> Hershey's, Nutella, Lechera, Dulce de leche, Mermelada de fresa, Caramelo <br>
+                    <strong>Cereales-Toppings:</strong> Chispas de chocolate, Kisses (Chocolate/Blanco/Combinado), Oreo, Granola, Almendra, Coco
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalCrepa" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="cerrarModal()">×</span>
+        <h3 id="modalTitle">Personalizar</h3>
+        <div id="optionsContainer"></div>
+        <button id="btnConfirmarCustom" onclick="confirmarCustomizacion()">¡Agregar al carrito! 💖</button>
+    </div>
+</div>
+
+<div class="mapa" id="mapa">
+    <h3>Ubicación</h3>
+    <button onclick="window.open('https://maps.app.goo.gl/vJqFt9KkekdtXUDQ6')">
+        Ver en Google Maps
+    </button>
+</div>
+
+<div class="info" id="info">
+    <h3>Información</h3>
+    <p>Cd. del Maíz SLP</p>
+    <p>Tel: 482 115 8241</p>
+</div>
+
+<div class="redes">
+    <h3>Síguenos</h3>
+    <a href="https://www.facebook.com/profile.php?id=61587135085995" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
+    </a>
+    <a href="https://www.instagram.com/coffee_hause05/" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+    </a>
+</div>
+
+<div id="noti"></div>
+
+<div class="floating-actions">
+    <div id="scrollToTop" class="btn-float" onclick="scrollToTop()">🌸</div>
+    <a href="https://wa.me/524821158241" class="btn-float whatsapp-float" target="_blank" title="Chat directo WhatsApp">💬</a>
+    <div class="btn-float carrito-btn" onclick="toggleCarrito()">🛒 <span id="contador">0</span></div>
+</div>
+
+<div class="carrito-panel" id="panelCarrito">
+    <h3>Tu Pedido</h3>
+    <ul id="listaCarrito"></ul>
+    <div id="totalCarrito">Total: $0</div>
+    <button onclick="enviarPedido()">Enviar pedido por WhatsApp 📲</button>
+</div>
+
+<script>
+let carrito = [];
+let currentCustom = { tipo: '', opcion: '', precio: 0 };
+
+// Cargar Carrito y Tema desde LocalStorage al iniciar
+window.addEventListener('DOMContentLoaded', () => {
+    const savedCart = localStorage.getItem('coffeeHauseCart');
+    if (savedCart) {
+        carrito = JSON.parse(savedCart);
+        actualizarCarrito();
+    }
+    
+    const darkModeSaved = localStorage.getItem('coffeeHauseDarkMode');
+    if (darkModeSaved === 'true') {
+        document.body.classList.add('dark-mode');
+    }
+    
+    verificarHorario();
+    setInterval(verificarHorario, 60000); // Actualiza el estado del horario cada minuto
+});
+
+function verificarHorario() {
+    const ahora = new Date();
+    const diaSemana = ahora.getDay(); // 0 es Domingo, 1 es Lunes... 6 es Sábado
+    const hora = ahora.getHours();
+    const badge = document.getElementById('estado-horario');
+
+    let abierto = false;
+
+    // Lógica de horarios
+    if (diaSemana === 0) { 
+        // DOMINGO: De 8:00 a 16:00
+        if (hora >= 8 && hora < 16) {
+            abierto = true;
+        }
+    } else { 
+        // LUNES A SÁBADO: De 15:00 a 18:00
+        if (hora >= 15 && hora < 18) {
+            abierto = true;
+        }
+    }
+
+    // Actualizar el badge según el estado
+    if (abierto) {
+        badge.innerHTML = "🟢 Abierto";
+        badge.style.backgroundColor = "#d4edda";
+        badge.style.color = "#155724";
+    } else {
+        badge.innerHTML = "🔴 Cerrado";
+        badge.style.backgroundColor = "#f8d7da";
+        badge.style.color = "#721c24";
+    }
+}
+
+// Interruptor de Modo Oscuro Pastel
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('coffeeHauseDarkMode', isDark);
+}
+
+// Modal Interactivo de Personalización Inteligente
+function abrirModalCustomizar(tipo, opcion, precio) {
+    currentCustom = { tipo, opcion, precio };
+    document.getElementById('modalTitle').innerText = `${opcion} ($${precio})`;
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+    
+    let html = '';
+    const frutas = ['Plátano', 'Fresa', 'Kiwi', 'Durazno'];
+    const endulzantes = ['Nutella', 'Mermelada de fresa', 'Mermelada de zarzamora', 'Lechera', 'Philadelphia', 'Hershey\'s'];
+    const toppings = ['Chispas de chocolate', 'Kiss de chocolate', 'Kiss blanco', 'Kiss combinado', 'Oreo', 'Granola', 'Almendra', 'Coco'];
+
+    if (tipo === 'crepa-dulce') {
+        const max = opcion.includes('1') ? 1 : 2;
+        html += `<p style="font-size:13px; color:#ff4d88; font-weight:bold; margin-bottom:10px;">Selecciona hasta ${max} ingrediente(s) en total:</p>`;
+        html += crearGrupoOpciones('Frutas', frutas, max, 'customOpt');
+        html += crearGrupoOpciones('Endulzantes', endulzantes, max, 'customOpt');
+    } else if (tipo === 'crepa-salada') {
+        const ing = ['Piña', 'Jamón', 'Queso manchego', 'Peperoni'];
+        const salsas = ['Salsa Valentina', 'Salsa Cátsup', 'Queso parmesano'];
+        const max = opcion.includes('1') ? 1 : 2;
+        html += `<p style="font-size:13px; color:#ff4d88; font-weight:bold; margin-bottom:10px;">Selecciona hasta ${max} ingrediente(s) en total:</p>`;
+        html += crearGrupoOpciones('Ingredientes', ing, max, 'customOpt');
+        html += crearGrupoOpciones('Salsas', salsas, max, 'customOpt');
+    } else if (tipo === 'hotcakes') {
+        const max = opcion.includes('2') ? 2 : 3;
+        html += `<p style="font-size:13px; color:#ff4d88; font-weight:bold; margin-bottom:10px;">Selecciona hasta ${max} fruta(s) y ${max} endulzante(s):</p>`;
+        html += crearGrupoOpciones(`Frutas (Máx. ${max})`, frutas, max, 'customFruit');
+        html += crearGrupoOpciones(`Endulzantes (Máx. ${max})`, endulzantes, max, 'customSweet');
+    } else if (tipo === 'waffle-grande') {
+        html += `<p style="font-size:13px; color:#ff4d88; font-weight:bold; margin-bottom:10px;">Selecciona hasta 4 ingredientes/toppings en total:</p>`;
+        html += crearGrupoOpciones('Frutas', frutas, 4, 'customOpt');
+        html += crearGrupoOpciones('Endulzantes', endulzantes, 4, 'customOpt');
+        html += crearGrupoOpciones('Toppings & Cereales', toppings, 4, 'customOpt');
+    } else if (tipo === 'mini-waffle') {
+        const max = opcion.includes('2') ? 2 : 3;
+        html += `<p style="font-size:13px; color:#ff4d88; font-weight:bold; margin-bottom:10px;">Selecciona hasta ${max} ingredientes en total:</p>`;
+        html += crearGrupoOpciones('Frutas', frutas, max, 'customOpt');
+        html += crearGrupoOpciones('Endulzantes', endulzantes, max, 'customOpt');
+        html += crearGrupoOpciones('Toppings & Cereales', toppings, max, 'customOpt');
+    } else if (tipo === 'fresas') {
+        html += `<p style="font-size:13px; color:#ff4d88; font-weight:bold; margin-bottom:10px;">Selecciona hasta 4 ingredientes/toppings:</p>`;
+        html += crearGrupoOpciones('Endulzantes', endulzantes, 4, 'customOpt');
+        html += crearGrupoOpciones('Toppings & Cereales', toppings, 4, 'customOpt');
+    }
+    
+    container.innerHTML = html;
+    document.getElementById('modalCrepa').style.display = 'flex';
+}
+
+function crearGrupoOpciones(titulo, lista, max, name) {
+    let fn = name === 'customOpt' ? `controlarMaximoCheckbox(this, ${max})` : `controlarMaximoGrupo(this, '${name}', ${max})`;
+    let html = `<div class="modal-options-group"><h5>${titulo}</h5><div class="modal-grid-options">`;
+    lista.forEach(item => {
+        html += `<label class="option-item"><input type="checkbox" name="${name}" value="${item}" onchange="${fn}"> ${item}</label>`;
+    });
+    return html + `</div></div>`;
+}
+
+function controlarMaximoCheckbox(checkbox, max) {
+    const checked = document.querySelectorAll('input[name="customOpt"]:checked');
+    if (checked.length > max) {
+        checkbox.checked = false;
+        alert(`🧁 ¡Ups! Solo puedes elegir un máximo de ${max} ingrediente(s) en total.`);
+    }
+}
+
+function controlarMaximoGrupo(checkbox, groupName, max) {
+    const checked = document.querySelectorAll(`input[name="${groupName}"]:checked`);
+    if (checked.length > max) {
+        checkbox.checked = false;
+        alert(`🧁 ¡Ups! El límite es de ${max} opciones para esta sección.`);
+    }
+}
+
+function cerrarModal() {
+    document.getElementById('modalCrepa').style.display = 'none';
+}
+
+function confirmarCustomizacion() {
+    if (currentCustom.tipo === 'hotcakes') {
+        const frutasChecked = document.querySelectorAll('input[name="customFruit"]:checked');
+        const sweetChecked = document.querySelectorAll('input[name="customSweet"]:checked');
+        
+        if (frutasChecked.length === 0 && sweetChecked.length === 0) {
+            alert("Por favor selecciona al menos un ingrediente para tus Hot Cakes.");
+            return;
+        }
+        
+        let f = Array.from(frutasChecked).map(c => c.value);
+        let s = Array.from(sweetChecked).map(c => c.value);
+        let desc = [];
+        if (f.length > 0) desc.push(`Frutas: ${f.join(', ')}`);
+        if (s.length > 0) desc.push(`Endulzantes: ${s.join(', ')}`);
+        
+        agregarProducto(`${currentCustom.opcion} (${desc.join(' | ')})`, currentCustom.precio);
+    } else {
+        const checked = document.querySelectorAll('input[name="customOpt"]:checked');
+        if (checked.length === 0) {
+            alert("Por favor selecciona al menos un ingrediente.");
+            return;
+        }
+        let lista = Array.from(checked).map(c => c.value).join(', ');
+        agregarProducto(`${currentCustom.opcion} (${lista})`, currentCustom.precio);
+    }
+    cerrarModal();
+}
+
+function toggleCarrito() {
+    let panel = document.getElementById("panelCarrito");
+    if (panel.style.display === "block") {
+        panel.style.display = "none";
+    } else {
+        panel.style.display = "block";
+        panel.style.animation = "bounce 0.3s ease-out";
+    }
+}
+
+/* SISTEMA INTELIGENTE DE CARRITO SIN DUPLICADOS Y CANTIDADES */
+function agregarProducto(nombre, precio, event) {
+    if (event) {
+        crearCorazon(event.clientX, event.clientY);
+    }
+
+    // Comprobar si el producto exacto ya está en el carrito
+    let productoExistente = carrito.find(item => item.nombre === nombre);
+
+    if (productoExistente) {
+        productoExistente.cantidad += 1;
+    } else {
+        carrito.push({ nombre: nombre, precio: precio, cantidad: 1 });
+    }
+
+    actualizarCarrito();
+    mostrarNoti("💖 Agregado: " + nombre);
+}
+
+function cambiarCantidad(index, cambio) {
+    carrito[index].cantidad += cambio;
+    if (carrito[index].cantidad <= 0) {
+        carrito.splice(index, 1);
+    }
+    actualizarCarrito();
+}
+
+function eliminarProducto(index) {
+    carrito.splice(index, 1);
+    actualizarCarrito();
+}
+
+/* CONTADOR REAL DE PRODUCTOS AUTOMÁTICO */
+function actualizarCarrito() {
+    let lista = document.getElementById("listaCarrito");
+    let contador = document.getElementById("contador");
+    let totalDiv = document.getElementById("totalCarrito");
+
+    lista.innerHTML = "";
+    let totalPrecio = 0;
+    let totalUnidades = 0;
+
+    carrito.forEach((item, i) => {
+        lista.innerHTML += `<li>
+            <div>
+                <strong>${item.nombre}</strong><br>
+                $${item.precio} c/u
+                <div class="cart-item-qty">
+                    <button class="btn-qty" onclick="cambiarCantidad(${i}, -1)">-</button>
+                    <span>${item.cantidad}</span>
+                    <button class="btn-qty" onclick="cambiarCantidad(${i}, 1)">+</button>
+                </div>
+            </div> 
+            <span class="eliminar" onclick="eliminarProducto(${i})" title="Eliminar artículo">❌</span>
+        </li>`;
+        totalPrecio += (item.precio * item.cantidad);
+        totalUnidades += item.cantidad;
+    });
+
+    // Contador real sumando todas las cantidades individuales
+    contador.textContent = totalUnidades;
+    totalDiv.innerHTML = `Total a pagar: <strong>$${totalPrecio}</strong>`;
+    
+    // Guardado persistente en LocalStorage
+    localStorage.setItem('coffeeHauseCart', JSON.stringify(carrito));
+    
+    contador.classList.remove("bounce-effect");
+    void contador.offsetWidth; 
+    contador.classList.add("bounce-effect");
+}
+
+function enviarPedido() {
+    if (carrito.length === 0) {
+        alert("¡Tu carrito de compras está vacío!");
+        return;
+    }
+    let mensaje = "☕ *Hola Coffee Hause, me gustaría hacer este pedido:* \n\n";
+    let total = 0;
+
+    carrito.forEach((item, i) => {
+        let subtotal = item.precio * item.cantidad;
+        mensaje += `📍 *${i + 1}.* ${item.nombre}\n   _Cant:_ ${item.cantidad}x $${item.precio} -> *$${subtotal}*\n\n`;
+        total += subtotal;
+    });
+
+    mensaje += `💵 *Total final a pagar: $${total}*\n\n¡Muchas gracias! ✨`;
+    window.open("https://wa.me/524821158241?text=" + encodeURIComponent(mensaje));
+}
+
+function buscarProductos() {
+    let input = document.getElementById('searchInput').value.toLowerCase();
+    let boxes = document.querySelectorAll('.menu-box');
+    
+    boxes.forEach(box => {
+        let items = box.querySelectorAll('.product-item');
+        let coincideAlguno = false;
+        
+        items.forEach(item => {
+            let titulo = item.querySelector('.product-title').innerText.toLowerCase();
+            let desc = item.querySelector('.product-desc').innerText.toLowerCase();
+            
+            if (titulo.includes(input) || desc.includes(input)) {
+                item.style.display = 'flex';
+                coincideAlguno = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        
+        if (coincideAlguno || input === "") {
+            box.style.display = 'flex';
+        } else {
+            box.style.display = 'none';
+        }
+    });
+}
+
+function mostrarNoti(texto) {
+    let n = document.getElementById("noti");
+    n.innerText = texto;
+    n.style.opacity = "1";
+    n.style.transform = "scale(1)";
+    setTimeout(() => {
+        n.style.opacity = "0";
+        n.style.transform = "scale(0.7)";
+    }, 2000);
+}
+
+function filtrarMenu(categoria, boton) {
+    let items = document.querySelectorAll('.menu-box');
+    let botones = document.querySelectorAll('.filter-btn');
+    
+    botones.forEach(btn => btn.classList.remove('active'));
+    boton.classList.add('active');
+    document.getElementById('searchInput').value = ""; 
+
+    items.forEach(item => {
+        item.querySelectorAll('.product-item').forEach(p => p.style.display = 'flex');
+
+        if (categoria === 'todos' || item.getAttribute('data-category') === categoria) {
+            item.style.display = 'flex';
+            item.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                item.style.transform = 'scale(1)';
+                item.style.transition = '0.4s';
+            }, 50);
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+function crearCorazon(x, y) {
+    const corazon = document.createElement("div");
+    corazon.className = "heart-particle";
+    corazon.innerText = "💖";
+    corazon.style.left = x + "px";
+    corazon.style.top = y + "px";
+    
+    const drift = (Math.random() - 0.5) * 120;
+    corazon.style.setProperty('--drift', `${drift}px`);
+    
+    document.body.appendChild(corazon);
+    setTimeout(() => { corazon.remove(); }, 1000);
+}
+
+window.addEventListener('scroll', () => {
+    let btn = document.getElementById('scrollToTop');
+    if (window.scrollY > 300) {
+        btn.classList.add('visible');
+    } else {
+        btn.classList.remove('visible');
+    }
+});
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
